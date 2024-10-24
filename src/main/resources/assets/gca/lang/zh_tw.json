@@ -1,5 +1,6 @@
 {
   "carpet.category.GCA": "GCA",
+  "carpet.category.BOT": "BOT",
 
   "carpet.rule.openFakePlayerInventory.name": "假人物品欄",
   "carpet.rule.openFakePlayerInventory.desc": "允許玩家開啟假人的物品欄",
@@ -28,6 +29,9 @@
   "carpet.rule.betterSignInteraction.name": "更好的告示牌互動",
   "carpet.rule.betterSignInteraction.desc": "右鍵點擊告示牌時與附著的方塊產生互動",
 
+  "carpet.rule.betterItemFrameInteraction.name": "更好的展示框互動",
+  "carpet.rule.betterItemFrameInteraction.desc": "右鍵點擊包含物品的展示框時與附著的方塊產生互動",
+
   "carpet.rule.betterSignEditing.name": "更好的告示牌編輯",
   "carpet.rule.betterSignEditing.desc": "可以使用名稱中包含「pen」的羽毛編輯告示牌",
 
@@ -37,8 +41,14 @@
   "carpet.rule.betterQuickCrafting.name": "Better Quick Crafting",
   "carpet.rule.betterQuickCrafting.desc": "Keep an item in the inventory during quick crafting",
 
-  "carpet.rule.botManagement.name": "Bot Management",
-  "carpet.rule.botManagement.desc": "A Bot Management Menu",
+  "carpet.rule.fakePlayerPrefixName.name": "Fake Player Prefix Name",
+  "carpet.rule.fakePlayerPrefixName.desc": "Fake Player Prefix Name",
+
+  "carpet.rule.fakePlayerSuffixName.name": "Fake Player Suffix Name",
+  "carpet.rule.fakePlayerSuffixName.desc": "Fake Player Suffix Name",
+
+  "carpet.rule.commandBot.name": "Bot Management",
+  "carpet.rule.commandBot.desc": "A Bot Management Menu",
 
   "gca.action.attack.interval.12": "間隔 12 gt攻擊：%s",
   "gca.action.attack.continuous": "連續攻擊：%s",

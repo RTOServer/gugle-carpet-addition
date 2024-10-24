@@ -7,12 +7,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import dev.dubhe.gugle.carpet.api.Function;
+import dev.dubhe.gugle.carpet.api.Consumer;
 import dev.dubhe.gugle.carpet.api.tools.text.ComponentTranslate;
 import dev.dubhe.gugle.carpet.tools.FakePlayerEnderChestContainer;
 import dev.dubhe.gugle.carpet.tools.FakePlayerInventoryContainer;
 import dev.dubhe.gugle.carpet.tools.FakePlayerResident;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,10 +29,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings("unused")
 public class GcaExtension implements CarpetExtension, ModInitializer {
@@ -40,21 +38,17 @@ public class GcaExtension implements CarpetExtension, ModInitializer {
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
     public static @NotNull ResourceLocation id(String path) {
-        return new ResourceLocation(MOD_ID, path);
+        return Objects.requireNonNull(ResourceLocation.tryBuild(MOD_ID, path));
     }
 
     public static final HashMap<Player, Map.Entry<FakePlayerInventoryContainer, FakePlayerEnderChestContainer>> fakePlayerInventoryContainerMap = new HashMap<>();
 
-    public static final List<Map.Entry<Long, Function>> planFunction = new ArrayList<>();
-
-    static {
-        CarpetServer.manageExtension(new GcaExtension());
-    }
+    public static final List<Map.Entry<Long, Consumer>> planFunction = new ArrayList<>();
 
     @Override
     public void onPlayerLoggedIn(ServerPlayer player) {
         GcaExtension.fakePlayerInventoryContainerMap.put(player, Map.entry(
-            new FakePlayerInventoryContainer(player), new FakePlayerEnderChestContainer(player)
+                new FakePlayerInventoryContainer(player), new FakePlayerEnderChestContainer(player)
         ));
     }
 
@@ -68,22 +62,18 @@ public class GcaExtension implements CarpetExtension, ModInitializer {
         CarpetServer.settingsManager.parseSettingsClass(GcaSetting.class);
     }
 
-    public static void onServerStop(MinecraftServer server) {
+    @Override
+    public void onServerClosed(MinecraftServer server) {
         if (GcaSetting.fakePlayerResident) {
             JsonObject fakePlayerList = new JsonObject();
-            fakePlayerInventoryContainerMap.forEach((player, fakePlayerInventoryContainer) -> {
+            fakePlayerInventoryContainerMap.keySet().forEach(player -> {
                 if (!(player instanceof EntityPlayerMPFake)) return;
-                String username = player.getName().getString();
+                if (player.saveWithoutId(new CompoundTag()).contains("gca.NoResident")) return;
+                String username = player.getGameProfile().getName();
                 fakePlayerList.add(username, FakePlayerResident.save(player));
             });
             File file = server.getWorldPath(LevelResource.ROOT).resolve("fake_player.gca.json").toFile();
-            if (!file.isFile()) {
-                try {
-                    file.createNewFile();
-                } catch (IOException e) {
-                    GcaExtension.LOGGER.error(e.getMessage(), e);
-                }
-            }
+            // 文件不需要存在
             try (BufferedWriter bfw = Files.newBufferedWriter(file.toPath(), StandardCharsets.UTF_8)) {
                 bfw.write(GSON.toJson(fakePlayerList));
             } catch (IOException e) {
@@ -93,20 +83,20 @@ public class GcaExtension implements CarpetExtension, ModInitializer {
         fakePlayerInventoryContainerMap.clear();
     }
 
-    public static void onServerStart(MinecraftServer server) {
+    @Override
+    public void onServerLoadedWorlds(MinecraftServer server) {
         if (GcaSetting.fakePlayerResident) {
-            JsonObject fakePlayerList = new JsonObject();
             File file = server.getWorldPath(LevelResource.ROOT).resolve("fake_player.gca.json").toFile();
             if (!file.isFile()) {
                 return;
             }
             try (BufferedReader bfr = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
-                fakePlayerList = GSON.fromJson(bfr, JsonObject.class);
+                JsonObject fakePlayerList = GSON.fromJson(bfr, JsonObject.class);
+                for (Map.Entry<String, JsonElement> entry : fakePlayerList.entrySet()) {
+                    FakePlayerResident.load(entry, server);
+                }
             } catch (IOException e) {
                 GcaExtension.LOGGER.error(e.getMessage(), e);
-            }
-            for (Map.Entry<String, JsonElement> entry : fakePlayerList.entrySet()) {
-                FakePlayerResident.load(entry, server);
             }
             file.delete();
         }
@@ -119,5 +109,6 @@ public class GcaExtension implements CarpetExtension, ModInitializer {
 
     @Override
     public void onInitialize() {
+        CarpetServer.manageExtension(this);
     }
 }

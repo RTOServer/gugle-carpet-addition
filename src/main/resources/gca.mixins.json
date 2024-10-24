@@ -8,19 +8,22 @@
     "APAccessor",
     "AxeItemMixin",
     "CommandsMixin",
+    "EntityInvoker",
+    "EntityPlayerMPFakeInvoker",
     "FenceGateBlockMixin",
     "FishingHookMixin",
+    "ItemFrameMixin",
     "ItemStackMixin",
+    "PlayerAccessor",
+    "PlayerCommandMixin",
     "PlayerMixin",
     "ServerLevelMixin",
     "ServerPlaceRecipeMixin",
-    "SignBlockMixin",
-    "MinecraftServerMixin"
+    "SignBlockMixin"
   ],
   "server": [
   ],
   "client": [
-    "ServerPlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
