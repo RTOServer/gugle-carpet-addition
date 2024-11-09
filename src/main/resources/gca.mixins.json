@@ -11,11 +11,13 @@
     "FenceGateBlockMixin",
     "FishingHookMixin",
     "ItemStackMixin",
+    "MinecraftServerMixin",
+    "NaturalSpawnerMixin",
     "PlayerMixin",
     "ServerLevelMixin",
     "ServerPlaceRecipeMixin",
     "SignBlockMixin",
-    "MinecraftServerMixin"
+    "WanderingTraderSpawnerMixin"
   ],
   "server": [
   ],

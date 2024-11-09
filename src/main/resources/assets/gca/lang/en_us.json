@@ -40,6 +40,12 @@
   "carpet.rule.botManagement.name": "Bot Management",
   "carpet.rule.botManagement.desc": "A Bot Management Menu",
 
+  "carpet.rule.traderSpawnTips.name": "Trader Spawn Tips",
+  "carpet.rule.traderSpawnTips.desc": "Prompt for the reason for the failed generation of wandering merchants",
+
+  "carpet.rule.qnmdLC.name": "Set LC value",
+  "carpet.rule.qnmdLC.desc": "What is the height value for setting the LC value",
+
   "gca.action.attack.interval.12": "Attack every 12 gt: %s",
   "gca.action.attack.continuous": "Attack continuous: %s",
   "gca.action.use.continuous": "Use continuous: %s",

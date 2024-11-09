@@ -73,6 +73,18 @@ public class GcaSetting {
     )
     public static boolean betterQuickCrafting = false;
 
+    // 流浪商人生成提示
+    @Rule(
+        categories = {GCA, EXPERIMENTAL}
+    )
+    public static boolean traderSpawnTips = false;
+
+    // 设置LC值为多少高度时的值
+    @Rule(
+        categories = {GCA, EXPERIMENTAL}
+    )
+    public static int qnmdLC = -1;
+
 //    // 方便快捷的假人管理菜单
 //    @Rule(
 //            categories = {GCA, EXPERIMENTAL}

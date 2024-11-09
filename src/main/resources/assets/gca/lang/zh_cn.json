@@ -40,6 +40,12 @@
   "carpet.rule.botManagement.name": "假人管理",
   "carpet.rule.botManagement.desc": "一个假人管理菜单",
 
+  "carpet.rule.traderSpawnTips.name": "流浪商人生成提示",
+  "carpet.rule.traderSpawnTips.desc": "提示流浪商人生成失败原因",
+
+  "carpet.rule.qnmdLC.name": "设置LC值",
+  "carpet.rule.qnmdLC.desc": "设置LC值的高度值是多少",
+
   "gca.action.attack.interval.12": "间隔 12 gt攻击：%s",
   "gca.action.attack.continuous": "一直左键： %s",
   "gca.action.use.continuous": "一直右键：%s",
